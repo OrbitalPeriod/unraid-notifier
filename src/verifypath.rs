@@ -12,23 +12,23 @@ impl VerifyPath for PathBuf {
         self.as_path().verify_path()
     }
 }
-impl VerifyPath for &Path{
+impl VerifyPath for &Path {
     fn verify_path(&self) -> Result<(), UnraidNotifierError> {
-        if !&self.try_exists().map_err(UnraidNotifierError::IOError)?{
-            return  Err(UnraidNotifierError::InvalidPath);
-        }else {
+        if !&self.try_exists().map_err(UnraidNotifierError::IOError)? {
+            Err(UnraidNotifierError::InvalidPath)
+        } else {
             Ok(())
         }
     }
 }
 
-impl VerifyPath for &str{
+impl VerifyPath for &str {
     fn verify_path(&self) -> Result<(), UnraidNotifierError> {
         Path::new(self).verify_path()
     }
 }
 
-impl VerifyPath for String{
+impl VerifyPath for String {
     fn verify_path(&self) -> Result<(), UnraidNotifierError> {
         self.as_str().verify_path()
     }

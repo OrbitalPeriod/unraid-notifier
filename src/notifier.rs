@@ -1,7 +1,8 @@
-use std::{default, ffi::OsStr, fmt::Display, path::Path, process::Command};
+use std::{ffi::OsStr, fmt::Display, path::Path, process::Command};
 
 use crate::{
-    notificationlevel::NotificationLevel, unraidnotifiererror::UnraidNotifierError, verifypath::VerifyPath
+    notificationlevel::NotificationLevel, unraidnotifiererror::UnraidNotifierError,
+    verifypath::VerifyPath,
 };
 
 // Function to send anything to the wegGui.
@@ -102,7 +103,7 @@ where
         Ok(())
     }
     /// Modifies the sender of the notifier.
-    pub fn modify_sender<A: Into<M>>(&mut self, sender: A){
+    pub fn modify_sender<A: Into<M>>(&mut self, sender: A) {
         let sender = sender.into();
         self.sender = sender;
     }
