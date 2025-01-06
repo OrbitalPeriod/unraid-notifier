@@ -1,9 +1,4 @@
-#[derive(Debug)]
-pub enum UnraidNotifierError {
-    InvalidPath,
-    IOError(std::io::Error),
-}
-
+/// Notification levels equivelent to unraid's
 #[derive(Clone, Copy, Debug)]
 pub enum NotificationLevel {
     Debug,

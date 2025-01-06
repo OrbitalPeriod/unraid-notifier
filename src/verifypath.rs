@@ -1,7 +1,8 @@
 use std::path::{Path, PathBuf};
 
-use crate::notificationlevel::UnraidNotifierError;
+use crate::unraidnotifiererror::UnraidNotifierError;
 
+/// Verify if there exists a file at the described path, fails if not.
 pub trait VerifyPath {
     fn verify_path(&self) -> Result<(), UnraidNotifierError>;
 }

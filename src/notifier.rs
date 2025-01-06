@@ -1,10 +1,10 @@
-use std::{ffi::OsStr, fmt::Display, path::Path, process::Command};
+use std::{default, ffi::OsStr, fmt::Display, path::Path, process::Command};
 
 use crate::{
-    notificationlevel::{NotificationLevel, UnraidNotifierError},
-    verifypath::VerifyPath,
+    notificationlevel::NotificationLevel, unraidnotifiererror::UnraidNotifierError, verifypath::VerifyPath
 };
 
+// Function to send anything to the wegGui.
 pub fn send<S, M, N>(
     message: M,
     level: NotificationLevel,
@@ -36,10 +36,14 @@ where
     }
 }
 
+// Used as an interface to implement
 pub trait Notifier<M: Display> {
     fn send(&self, message: M, level: NotificationLevel) -> Result<(), UnraidNotifierError>;
 }
 
+/// The 'UnraidNotifier' struct is responsible for sending notifications.
+///
+/// The sender is the name displayed as by the unraid webgui.
 pub struct UnraidNotifier<S, M>
 where
     S: AsRef<OsStr> + VerifyPath,
@@ -54,6 +58,16 @@ where
     S: AsRef<OsStr> + VerifyPath,
     M: Display,
 {
+    /// Creates a new UnraidNotifier with the specified path and sender.
+    ///
+    /// # Arguments
+    ///    
+    /// - `notify_cmd_path`: The path to the notification command.
+    /// - `sender`: The sender of the notification.
+    ///
+    /// # Errors
+    ///
+    /// Returns an 'UnraidNotifierError' if the path verification fails.
     pub fn new(notify_cmd_path: S, sender: M) -> Result<Self, UnraidNotifierError> {
         notify_cmd_path.verify_path()?;
 
@@ -62,23 +76,35 @@ where
             sender,
         })
     }
+    /// Consumes the notifier, and returns one with a new path.
     pub fn with_path<A: Into<S>>(self, path: A) -> Self {
         Self {
             notify_cmd_path: path.into(),
             ..self
         }
     }
+    /// Consumes the notifier, and returns one with a new sender.
     pub fn with_sender<A: Into<M>>(self, sender: A) -> Self {
         Self {
             sender: sender.into(),
             ..self
         }
     }
+    /// Modifies the path of notifier.
+    ///
+    /// # Errors
+    ///
+    /// Returns an 'UnraidNotifierError' if the path verification fails.
     pub fn modify_path<A: Into<S>>(&mut self, path: A) -> Result<(), UnraidNotifierError> {
         let path = path.into();
         path.verify_path()?;
         self.notify_cmd_path = path;
         Ok(())
+    }
+    /// Modifies the sender of the notifier.
+    pub fn modify_sender<A: Into<M>>(&mut self, sender: A){
+        let sender = sender.into();
+        self.sender = sender;
     }
 }
 
