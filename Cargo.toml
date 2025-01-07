@@ -2,5 +2,11 @@
 name = "unraid-notification"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "A crate to ease pushing messages to the unraid webGUI."
+repository = "https://github.com/OrbitalPeriod/unraid-notifier"
+readme = "README.md"
+keywords = ["unraid"]
+authors = ["Thomas de Gruijter <thomasdegruijter@pm.me>"]
 
 [dependencies]
