@@ -45,6 +45,7 @@ pub trait Notifier<M: Display> {
 /// The 'UnraidNotifier' struct is responsible for sending notifications.
 ///
 /// The sender is the name displayed as by the unraid webgui.
+#[derive(Debug, Clone)]
 pub struct UnraidNotifier<S, M>
 where
     S: AsRef<OsStr> + VerifyPath,

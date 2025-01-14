@@ -1,3 +1,5 @@
+use std::error::Error;
+
 /// Errors, InvalidPath is returned if the path is invalid, IOError is used for if the path could
 /// not be read, or the process could not be spawned.
 #[derive(Debug)]
@@ -11,6 +13,15 @@ impl std::fmt::Display for UnraidNotifierError {
         match self {
             UnraidNotifierError::InvalidPath => write!(f, "Invalid path"),
             UnraidNotifierError::IOError(e) => write!(f, "IO error: {}", e),
+        }
+    }
+}
+
+impl Error for UnraidNotifierError{
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match self{
+            Self::IOError(err) => Some(err),
+            _ => None
         }
     }
 }
